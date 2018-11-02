@@ -10,6 +10,7 @@ LOCAL_CPP_EXTENSION := .cc \
 LOCAL_SRC_FILES := \
 	audio/audio_frame.cc \
 	audio/audio_frame_operations.cc \
+	audio/audio_util.cc \
 	audio_mixer/audio_frame_manipulator.cc \
 	audio_mixer/audio_mixer_impl.cc \
 	audio_mixer/default_output_rate_calculator.cc \
@@ -20,7 +21,17 @@ LOCAL_SRC_FILES := \
 	rtc_base/criticalsection.cc \
 	rtc_base/platform_thread_types.cc \
 	rtc_base/race_checker.cc \
-	rtc_base/timeutils.cc
+	rtc_base/timeutils.cc \
+	mixer/audio_file_decoder.cpp \
+	mixer/audio_file_source.cpp \
+	mixer/audio_mixer.cpp \
+	mixer/audio_mixer_global.cpp \
+	mixer/audio_record_source.cpp \
+	mixer/audio_resampler.cpp \
+	mixer/audio_source.cpp \
+	mixer/mixer_source.cpp \
+
+	
 	
 
 LOCAL_LDLIBS := -llog -lz
