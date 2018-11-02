@@ -18,8 +18,6 @@
 #include <string>
 
 #include "rtc_base/checks.h"
-#undef min
-#undef max
 
 namespace rtc {
 

@@ -38,11 +38,13 @@ project "test"
 		"audio/*.cc",
 		"rtc_base/*.h",
 		"rtc_base/*.cc",
+		"mixer/*.h",
+		"mixer/*.cpp",
 		"main.cpp",
 	}
-	defines {"WEBRTC_WIN"}
+	defines {"WEBRTC_WIN","NOMINMAX"}
 	includedirs{
-		"./",
+		"./","ffmpeg/",
 	}
 
 	
