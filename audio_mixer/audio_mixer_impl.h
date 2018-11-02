@@ -55,7 +55,7 @@ class AudioMixerImpl : public AudioMixer {
   bool AddSource(Source* audio_source) override;
   void RemoveSource(Source* audio_source) override;
 
-  void Mix(size_t number_of_channels,
+  bool Mix(size_t number_of_channels,
            AudioFrame* audio_frame_for_mixing) override
       RTC_LOCKS_EXCLUDED(crit_);
 

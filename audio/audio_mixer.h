@@ -67,7 +67,7 @@ class AudioMixer : public rtc::RefCountInterface {
   // sources' audio. The mixing rate is one of the rates listed in
   // AudioProcessing::NativeRate. All fields in
   // |audio_frame_for_mixing| must be updated.
-  virtual void Mix(size_t number_of_channels,
+  virtual bool Mix(size_t number_of_channels,
                    AudioFrame* audio_frame_for_mixing) = 0;
 
  protected:

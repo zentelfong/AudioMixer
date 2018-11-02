@@ -20,7 +20,7 @@ void main()
 
 	std::vector<MixerSource> sources;
 	sources.push_back(MixerSource(MixerSource::TYPE_FILE, 1, 1.0, "test1.mp3", 0, 0));
-	sources.push_back(MixerSource(MixerSource::TYPE_FILE, 2, 1.0, "test2.mp3", 0, 0));
+	sources.push_back(MixerSource(MixerSource::TYPE_FILE, 2, 0.5, "test2.mp3", 0, 0));
 	MixerConfig config(sources,44100,2,10);
 	std::shared_ptr<AudioMixerApi> mixer = AudioMixerApi::Create(config);
 

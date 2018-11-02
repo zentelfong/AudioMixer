@@ -75,13 +75,17 @@ bool AudioMixer::RemoveSource(int32_t ssrc) {
 }
 
 int32_t AudioMixer::Mix(void* output_buffer) {
-    mixer_->Mix(static_cast<size_t>(output_channel_num_), mixed_frame_.get());
-
-    int32_t size = av_samples_get_buffer_size(nullptr, output_channel_num_, real_output_samples_,
-                                              kOutputSampleFormat, 1);
-    memcpy(output_buffer, reinterpret_cast<const void*>(mixed_frame_->data()),
-           static_cast<size_t>(size));
-    return size;
+    bool rslt = mixer_->Mix(static_cast<size_t>(output_channel_num_), mixed_frame_.get());
+	if (rslt)
+	{
+		int32_t size = av_samples_get_buffer_size(nullptr, output_channel_num_, real_output_samples_,
+			kOutputSampleFormat, 1);
+		memcpy(output_buffer, reinterpret_cast<const void*>(mixed_frame_->data()),
+			static_cast<size_t>(size));
+		return size;
+	}
+	else
+		return 0;
 }
 
 int32_t AudioMixer::AddRecordedDataAndMix(const void* data, int32_t size, void* output_buffer) {

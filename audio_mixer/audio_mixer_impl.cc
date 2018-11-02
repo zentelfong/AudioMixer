@@ -113,7 +113,7 @@ rtc::scoped_refptr<AudioMixerImpl> AudioMixerImpl::Create(
           std::move(output_rate_calculator)));
 }
 
-void AudioMixerImpl::Mix(size_t number_of_channels,
+bool AudioMixerImpl::Mix(size_t number_of_channels,
                          AudioFrame* audio_frame_for_mixing) {
   RTC_DCHECK(number_of_channels == 1 || number_of_channels == 2);
   RTC_DCHECK_RUNS_SERIALIZED(&race_checker_);
@@ -122,12 +122,12 @@ void AudioMixerImpl::Mix(size_t number_of_channels,
   {
     rtc::CritScope lock(&crit_);
     const size_t number_of_streams = audio_source_list_.size();
-    frame_combiner_.Combine(GetAudioFromSources(), number_of_channels,
+	AudioFrameList list = GetAudioFromSources();
+    frame_combiner_.Combine(list, number_of_channels,
                             OutputFrequency(), number_of_streams,
                             audio_frame_for_mixing);
+	return list.size() > 0;
   }
-
-  return;
 }
 
 void AudioMixerImpl::CalculateOutputFrequency() {
