@@ -1,5 +1,6 @@
 #include "mixer/audio_mixer.h"
 #include "mixer/avx_helper.h"
+#include "audio/dr_wav.h"
 
 #ifdef WIN32
 #pragma comment(lib,"winmm.lib")
@@ -18,20 +19,29 @@ void main()
 	avcodec_register_all();
 	av_register_all();
 
+
+	drwav_data_format format;
+	format.container = drwav_container_riff;
+	format.format = DR_WAVE_FORMAT_PCM;
+	format.channels = 2;
+	format.sampleRate = 44100;
+	format.bitsPerSample = 16;
+	drwav* pWav = drwav_open_file_write("mixed.wav", &format);
+
+
 	std::vector<MixerSource> sources;
-	sources.push_back(MixerSource(MixerSource::TYPE_FILE, 1, 1.0, "test1.mp3", 0, 0));
-	sources.push_back(MixerSource(MixerSource::TYPE_FILE, 2, 0.5, "test2.mp3", 0, 0));
+	sources.push_back(MixerSource(MixerSource::TYPE_FILE, 1, 1.0, "test1.wav", 0, 0));
+	sources.push_back(MixerSource(MixerSource::TYPE_FILE, 2, 0.4, "test2.mp3", 0, 0));
 	MixerConfig config(sources,44100,2,10);
 	std::shared_ptr<AudioMixerApi> mixer = AudioMixerApi::Create(config);
 
 	char buf[AudioMixerApi::MAX_BUF_SIZE];
-	FILE* file = fopen("out.pcm", "wb");
 
 	int len = mixer->Mix(buf);
 	while (len>0)
 	{
-		fwrite(buf, 1, len, file);
+		drwav_write(pWav, len/2, buf);
 		len = mixer->Mix(buf);
 	}
-	fclose(file);
+	drwav_close(pWav);
 }
